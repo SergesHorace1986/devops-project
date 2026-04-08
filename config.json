@@ -1,0 +1,13 @@
+{
+	"auths": {
+		"ghcr.io": {
+			"auth": "U2VyZ2VzSG9yYWNlMTk4NjpnaHBfTUZvMlp2QTVoTUlLWnRNaWhDUGxGajBYYUcyTkROMWZZWEM4"
+		},
+		"https://index.docker.io/v1/": {
+			"auth": "aG9yYWNpbzE5ODY6ZGNrcl9wYXRfY283eUF5aUpRNU96UUlLQU0wblVXcmFIUVFN"
+		},
+		"registry.gitlab.com": {
+			"auth": "U2VyZ2VzSG9yYWNlMTk4NjpnbHBhdC1rWU1wR3dHM0FidFJUeS1GVlNOcVRHTTZNUXB2T2pFS2RUcHFjM1pqY3c4LjAxLjE3MWx3N2Q4Yg=="
+		}
+	}
+}

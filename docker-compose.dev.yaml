@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+    container_name: frontend-development
+    ports:
+      - "3000:3000"
+    environment:
+      - ENV=development
+      - DEBUG=true
