@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: devops-project
-          image: registry.gitlab.com/sergeshorace1986/devops-project:latest # replace with your image
+          image: registry.gitlab.com/sergeshorace1986/devops-project:__IMAGE_TAG__
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
