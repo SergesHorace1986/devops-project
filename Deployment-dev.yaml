@@ -6,7 +6,7 @@ metadata:
   labels:
     app: devops-project
 spec:
-  replicas: 1 # lightweight for dev
+  replicas: 1
   selector:
     matchLabels:
       app: devops-project
@@ -15,9 +15,15 @@ spec:
       labels:
         app: devops-project
     spec:
+      imagePullSecrets:
+        - name: gitlab-registry-secret
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        allowPrivilegeEscalation: false
       containers:
         - name: devops-project
-          image: registry.gitlab.com/sergeshorace1986/devops-project:dev # dev-tag image
+          image: registry.gitlab.com/sergeshorace1986/devops-project:__IMAGE_TAG__
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
@@ -26,7 +32,13 @@ spec:
                 name: devops-project-config
             - secretRef:
                 name: devops-project-secret
-          # Optional: smaller delays for faster feedback
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
           readinessProbe:
             httpGet:
               path: /health
@@ -39,4 +51,3 @@ spec:
               port: 3000
             initialDelaySeconds: 5
             periodSeconds: 10
-      restartPolicy: Always
