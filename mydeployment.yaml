@@ -1,20 +1,54 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: production-environment
-  namespace: production
+  name: devops-project
+  namespace: prod              # ← prod
+  labels:
+    app: devops-project
+    env: prod
 spec:
-  replicas: 2
+  replicas: 2                  # ← 2 replicas for prod
   selector:
     matchLabels:
-      app: production-environment
+      app: devops-project
   template:
     metadata:
       labels:
-        app: production-environment
+        app: devops-project
     spec:
+      imagePullSecrets:
+        - name: gitlab-registry-secret
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        allowPrivilegeEscalation: false
       containers:
-      - name: prod-app
-        image: registry.gitlab.com/sergeshorace1986/devops-project:latest
-        ports:
-        - containerPort: 3000
+        - name: devops-project
+          image: registry.gitlab.com/sergeshorace1986/devops-project:__IMAGE_TAG__
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: devops-project-config
+            - secretRef:
+                name: devops-project-secret
+          resources:
+            requests:
+              cpu: "200m"      # ← higher than dev
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 20
