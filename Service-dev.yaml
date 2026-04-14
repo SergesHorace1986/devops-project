@@ -1,13 +1,18 @@
+
 apiVersion: v1
 kind: Service
 metadata:
   name: devops-project-service
   namespace: dev
+  labels:
+    app: devops-project
+    env: dev
 spec:
   selector:
     app: devops-project
   type: ClusterIP
   ports:
-    - port: 80
+    - name: http
+      port: 80
       targetPort: 3000
       protocol: TCP
