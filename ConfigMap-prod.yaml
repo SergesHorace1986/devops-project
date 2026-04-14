@@ -1,8 +1,14 @@
+# k8s/prod/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: devops-project-config
   namespace: prod
+  labels:
+    app: devops-project
+    env: prod        # ← label difference makes it easy to filter with kubectl
 data:
   NODE_ENV: "production"
   LOG_LEVEL: "error"
+  PORT: "3000"
+  APP_ENV: "prod"
