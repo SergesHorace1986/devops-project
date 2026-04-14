@@ -5,6 +5,14 @@ services:
     container_name: frontend-development
     ports:
       - "3000:3000"
-    environment:
-      - ENV=development
-      - DEBUG=true
+    env_file:
+      - .env.development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
